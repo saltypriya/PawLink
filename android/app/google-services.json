@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "703873194084",
+    "project_id": "pawlink-530d3",
+    "storage_bucket": "pawlink-530d3.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:703873194084:android:db39c5ac3579027f00a771",
+        "android_client_info": {
+          "package_name": "com.example.pawlink"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA_1GNLqOLVxLk3Q8SEO1E9wnOiEo_rsCg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

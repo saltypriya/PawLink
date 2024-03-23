@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class SelectionPage extends StatefulWidget {
-  const SelectionPage({super.key});
+  const SelectionPage({Key? key}) : super(key: key);
 
   @override
   _SelectionPageState createState() => _SelectionPageState();
@@ -35,7 +35,7 @@ class _SelectionPageState extends State<SelectionPage> {
             children: [
               Checkbox(
                 value: isSelected1,
-                onChanged: (value) => setState(() => isSelected1 = value!),
+                onChanged: (value) => setState(() => isSelected1 = value ?? false),
               ),
               Text("Find caretaker for my pet"),
             ],
@@ -46,9 +46,9 @@ class _SelectionPageState extends State<SelectionPage> {
             children: [
               Checkbox(
                 value: isSelected2,
-                onChanged: (value) => setState(() => isSelected2 = value!),
+                onChanged: (value) => setState(() => isSelected2 = value ?? false),
               ),
-              Text("Find a partime caretaker job"),
+              Text("Find a part-time caretaker job"),
             ],
           ),
           SizedBox(height: 10.0),
@@ -63,7 +63,30 @@ class _SelectionPageState extends State<SelectionPage> {
                   style: ElevatedButton.styleFrom(
                       onPrimary: Colors.white, primary: Colors.orange),
                   onPressed: () {
-                    // Handle button press logic here, accessing isSelected1 and isSelected2
+                    // Check if any option is selected
+                    if (isSelected1 || isSelected2) {
+                      // Navigate to the home page
+                      Navigator.pushNamed(context, "/home");
+                    } else {
+                      // Show error message or handle when no option is selected
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            title: Text("No Option Selected"),
+                            content: Text("Please select at least one option."),
+                            actions: <Widget>[
+                              TextButton(
+                                child: Text("OK"),
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                              ),
+                            ],
+                          );
+                        },
+                      );
+                    }
                   },
                   child: Text("Let's go"),
                 ),
