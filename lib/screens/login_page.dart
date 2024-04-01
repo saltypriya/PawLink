@@ -1,120 +1,158 @@
 import 'package:flutter/material.dart';
-import 'package:pawlink/screens/home_page.dart';
+import 'package:pawlink/screens/signup_page.dart';
+import 'package:pawlink/JsonModels/users.dart';
+import 'package:pawlink/SQLite/sqlite.dart';
+import 'package:pawlink/screens/selection.dart';
 
-class LoginPage extends StatelessWidget {
-  const LoginPage({Key? key}) : super(key: key);
+class LoginScreen extends StatefulWidget {
+  const LoginScreen({super.key});
 
-  void _login(BuildContext context, String username, String password) {
-    // Check if username and password match certain values
-    if (username == "admin" && password == "test") {
-      // Navigate to selection page if login is successful
-      Navigator.pushNamed(context, "/selection");
-    } else {
-      // Show error message or handle invalid login
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text("Invalid Credentials"),
-            content: Text("Please enter correct username and password."),
-            actions: <Widget>[
-              TextButton(
-                child: Text("OK"),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-              ),
-            ],
-          );
-        },
+  @override
+  State<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
+  final TextEditingController _usernameController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  bool _isVisible = false;
+  bool _isLoginTrue = false;
+  final _db = DatabaseHelper();
+  final _formKey = GlobalKey<FormState>();
+
+  Future<void> _login() async {
+    final response = await _db.login(Users(
+      usrName: _usernameController.text,
+      usrPassword: _passwordController.text,
+    ));
+    if (response == true) {
+      if (!mounted) return;
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => const SelectionPage()),
       );
+    } else {
+      setState(() {
+        _isLoginTrue = true;
+      });
     }
   }
 
-
   @override
   Widget build(BuildContext context) {
-    String username = '';
-    String password = '';
-
-    return Material(
-      child: Column(
-        children: [
-          SizedBox(height: 40.0),
-          SizedBox(height: 30.0),
-          Text(
-            "Welcome back",
-            style: TextStyle(
-              fontSize: 22,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          SizedBox(height: 10.0),
-          Text(
-            "Please enter your account here",
-            style: TextStyle(
-              color: Colors.grey,
-              fontSize: 15,
-            ),
-          ),
-          SizedBox(height: 30.0),
-          Image.asset(
-            "assets/images/dog.png",
-            width: 100, // Set desired width
-            height: 100, // Set desired height
-            fit: BoxFit.cover,
-          ),
-          SizedBox(height: 10.0),
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 9, horizontal: 32.0),
-            child: Column(
-              children: [
-                TextFormField(
-                  onChanged: (value) {
-                    username = value;
-                  },
-                  decoration: InputDecoration(
-                    hintText: "Enter Username",
-                    labelText: "Username",
+    return Scaffold(
+      body: Center(
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: Form(
+              key: _formKey,
+              child: Column(
+                children: [
+                  Image.asset(
+                    "assets/login.png", // assuming this is your image path
+                    width: 210,
                   ),
-                ),
-                TextFormField(
-                  onChanged: (value) {
-                    password = value;
-                  },
-                  obscureText: true,
-                  decoration: InputDecoration(
-                    hintText: "Enter Password",
-                    labelText: "Password",
-                  ),
-                ),
-                SizedBox(height: 10.0),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    TextButton(
-                      onPressed: () {
-                        // Handle "Forgot Password" functionality here
+                  const SizedBox(height: 15),
+                  Container(
+                    margin: const EdgeInsets.all(8),
+                    padding:
+                    const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(8),
+                        color: Colors.deepPurple.withOpacity(.2)),
+                    child: TextFormField(
+                      controller: _usernameController,
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return "Username is required";
+                        }
+                        return null;
                       },
-                      child: Text("Forgot Password?"),
+                      decoration: const InputDecoration(
+                        icon: Icon(Icons.person),
+                        border: InputBorder.none,
+                        hintText: "Username",
+                      ),
                     ),
-                  ],
-                ),
-                SizedBox(height: 30.0),
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    onPrimary: Colors.white,
-                    primary: Colors.deepPurple,
                   ),
-                  onPressed: () {
-                    _login(context, username, password);
-                  },
-                  child: Text("Login"),
-                ),
-              ],
+                  Container(
+                    margin: const EdgeInsets.all(8),
+                    padding:
+                    const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(8),
+                        color: Colors.deepPurple.withOpacity(.2)),
+                    child: TextFormField(
+                      controller: _passwordController,
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return "Password is required";
+                        }
+                        return null;
+                      },
+                      obscureText: !_isVisible,
+                      decoration: InputDecoration(
+                        icon: const Icon(Icons.lock),
+                        border: InputBorder.none,
+                        hintText: "Password",
+                        suffixIcon: IconButton(
+                          onPressed: () {
+                            setState(() {
+                              _isVisible = !_isVisible;
+                            });
+                          },
+                          icon: Icon(_isVisible
+                              ? Icons.visibility
+                              : Icons.visibility_off),
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  Container(
+                    height: 55,
+                    width: MediaQuery.of(context).size.width * .9,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(8),
+                        color: Colors.deepPurple),
+                    child: TextButton(
+                      onPressed: () {
+                        if (_formKey.currentState!.validate()) {
+                          _login();
+                        }
+                      },
+                      child: const Text(
+                        "LOGIN",
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    ),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Text("Don't have an account?"),
+                      TextButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => const SignUp()),
+                          );
+                        },
+                        child: const Text("SIGN UP"),
+                      ),
+                    ],
+                  ),
+                  _isLoginTrue
+                      ? const Text(
+                    "Username or password is incorrect",
+                    style: TextStyle(color: Colors.red),
+                  )
+                      : const SizedBox(),
+                ],
+              ),
             ),
-          )
-        ],
+          ),
+        ),
       ),
     );
   }
