@@ -50,9 +50,9 @@ class _SelectionPageState extends State<SelectionPage> {
                   if (selectedOption != null) {
                     // Navigate to corresponding page based on the selected option
                     if (selectedOption == 'find_caretaker') {
-                      Navigator.pushNamed(context, '/caretaker');
+                      Navigator.pushNamed(context, '/ownerform');
                     } else if (selectedOption == 'find_job') {
-                      Navigator.pushNamed(context, '/job');
+                      Navigator.pushNamed(context, '/caretakerform');
                     }
                   } else {
                     // Show error message if no option is selected

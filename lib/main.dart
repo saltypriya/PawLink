@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:pawlink/form/PetInfoPage.dart';
+import 'package:pawlink/form/petcaretakerform.dart';
+import 'package:pawlink/form/petownerform.dart';
 import 'package:pawlink/screens/home_petcare.dart';
 import 'package:pawlink/screens/home_petowner.dart';
 import 'package:pawlink/screens/login_page.dart';
@@ -17,7 +20,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.deepOrange,
       ),
-      initialRoute: "/login",
+      initialRoute: "/",
       routes: {
         "/": (context) => LoginScreen(),
         "/caretaker": (context) => HomePage_pet(),
@@ -25,6 +28,9 @@ class MyApp extends StatelessWidget {
         "/login": (context) => LoginScreen(),
         "/signup": (context) => SignUp(),
         "/selection": (context) => SelectionPage(),
+        "/ownerform": (context) => OwnerInfoPage(),
+        "/petform" : (context) => PetInfoPage(),
+        "/caretakerform" : (context) => PetCaretakerInfoPage()
       },
     );
   }
