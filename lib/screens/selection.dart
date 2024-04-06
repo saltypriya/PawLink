@@ -8,92 +8,66 @@ class SelectionPage extends StatefulWidget {
 }
 
 class _SelectionPageState extends State<SelectionPage> {
-  bool isSelected1 = false;
-  bool isSelected2 = false;
+  String? selectedOption;
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          SizedBox(height: 40.0),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20.0),
-            child: Text(
-              "Do you want find a caretaker or apply for the job?",
-              style: TextStyle(
-                fontSize: 22,
-                fontWeight: FontWeight.bold,
-              ),
-              textAlign: TextAlign.center,
+    return Scaffold(
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              'What do you want to do?',
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
-          ),
-          SizedBox(height: 10.0),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Checkbox(
-                value: isSelected1,
-                onChanged: (value) => setState(() => isSelected1 = value ?? false),
-              ),
-              Text("Find caretaker for my pet"),
-            ],
-          ),
-          SizedBox(height: 10.0),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Checkbox(
-                value: isSelected2,
-                onChanged: (value) => setState(() => isSelected2 = value ?? false),
-              ),
-              Text("Find a part-time caretaker job"),
-            ],
-          ),
-          SizedBox(height: 10.0),
-          Image.asset("assets/images/selection_dog.png",
-              width: 100, height: 100, fit: BoxFit.cover),
-          SizedBox(height: 3.0),
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 9, horizontal: 32.0),
-            child: Column(
-              children: [
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                      onPrimary: Colors.white, primary: Colors.orange),
-                  onPressed: () {
-                    // Check if any option is selected
-                    if (isSelected1 || isSelected2) {
-                      // Navigate to the home page
-                      Navigator.pushNamed(context, "/home");
-                    } else {
-                      // Show error message or handle when no option is selected
-                      showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return AlertDialog(
-                            title: Text("No Option Selected"),
-                            content: Text("Please select at least one option."),
-                            actions: <Widget>[
-                              TextButton(
-                                child: Text("OK"),
-                                onPressed: () {
-                                  Navigator.of(context).pop();
-                                },
-                              ),
-                            ],
-                          );
-                        },
-                      );
+            SizedBox(height: 20),
+            RadioListTile(
+              title: Text('Find a caretaker for my pet'),
+              value: 'find_caretaker',
+              groupValue: selectedOption,
+              onChanged: (value) {
+                setState(() {
+                  selectedOption = value as String?;
+                });
+              },
+            ),
+            RadioListTile(
+              title: Text('Find a part-time caretaker job'),
+              value: 'find_job',
+              groupValue: selectedOption,
+              onChanged: (value) {
+                setState(() {
+                  selectedOption = value as String?;
+                });
+              },
+            ),
+            SizedBox(height: 20),
+            Padding(
+              padding: const EdgeInsets.only(bottom: 20.0),
+              child: ElevatedButton(
+                onPressed: () {
+                  if (selectedOption != null) {
+                    // Navigate to corresponding page based on the selected option
+                    if (selectedOption == 'find_caretaker') {
+                      Navigator.pushNamed(context, '/caretaker');
+                    } else if (selectedOption == 'find_job') {
+                      Navigator.pushNamed(context, '/job');
                     }
-                  },
-                  child: Text("Let's go"),
-                ),
-              ],
+                  } else {
+                    // Show error message if no option is selected
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text('Please select an option'),
+                      ),
+                    );
+                  }
+                },
+                child: Text('Let\'s go'),
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

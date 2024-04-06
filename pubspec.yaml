@@ -14,12 +14,19 @@ dependencies:
   path: ^1.8.3
   intl: ^0.18.1
   path_provider: ^2.1.1
+  flutter_svg: ^2.0.6
+  google_fonts: ^5.0.0
+  feather_icons: ^1.2.0
+
 
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^2.0.0
+  get: ^4.6.1
+
 
 flutter:
   uses-material-design: true
+
