@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'caretaker_profile_page.dart';
+import 'CaretakerProfilePage.dart';
 import 'package:get/get.dart';
 
 void main() {
@@ -25,7 +25,7 @@ class MyApp extends StatelessWidget {
 }
 
 class HomePage extends StatelessWidget {
-  final NavigationController controller = NavigationController(); // Create a new instance here
+  final NavigationController controller = NavigationController();
 
   @override
   Widget build(BuildContext context) {
@@ -104,16 +104,17 @@ class NavigationController extends GetxController {
   final Rx<int> selectedIndex = 0.obs;
 
   final screens = [
-    HomePageContent(), // Home
-    Container(color: Colors.purple), // Gigs
-    SettingsScreen(), // Settings
-    AccountScreen(), // Account
+    HomePageContent(),
+    GigsScreen(),
+    SettingsScreen(),
+    AccountScreen(),
   ];
 }
 
 class HomePageContent extends StatelessWidget {
   final int days = 45;
-  final String name = "Human!";
+  final String name = "Pet Lover!";
+  final String imageUrl = "assets/images/curve.png";
 
   @override
   Widget build(BuildContext context) {
@@ -128,23 +129,38 @@ class HomePageContent extends StatelessWidget {
               style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold),
             ),
             SizedBox(height: 10.0),
+            ClipRRect(
+              borderRadius: BorderRadius.circular(20),
+              child: Image.asset(
+                imageUrl,
+                width: 320,
+                height: 180,
+                fit: BoxFit.cover,
+              ),
+            ),
+            SizedBox(height: 10.0),
             Text(
               "Available Pet Caretakers:",
               style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
             ),
             SizedBox(height: 10.0),
             _buildCaretakerCard(
-              name: "John Doe",
-              description: "Experienced caretaker, available on weekends",
-              imageUrl: "https://via.placeholder.com/150", // Example image URL
+              name: "Aarav Gupta",
+              description: "Experienced pet lover, available on weekends",
+              imageUrl: imageUrl,
+              availability: "Full-time",
+              location: "Gurugram, Haryana",
+              dateAvailable: "April 10, 2024",
               onPressed: () {
-                // Navigate to caretaker profile page
                 Navigator.push(
                   context,
                   MaterialPageRoute(
                     builder: (context) => CaretakerProfilePage(
-                      name: "John Doe",
-                      description: "Experienced caretaker, available on weekends",
+                      name: "Aarav Gupta",
+                      description: "Experienced pet lover, available on weekends",
+                      availability: "Full-time",
+                      location: "Gurugram, Haryana",
+                      dateAvailable: "April 10, 2024",
                     ),
                   ),
                 );
@@ -152,35 +168,42 @@ class HomePageContent extends StatelessWidget {
             ),
             SizedBox(height: 10.0),
             _buildCaretakerCard(
-              name: "Emily Smith",
-              description: "Loves animals, flexible hours",
-              imageUrl: "https://via.placeholder.com/150", // Example image URL
+              name: "Neha Sharma",
+              description: "Loves animals, available during evenings",
+              imageUrl: imageUrl,
+              availability: "Part-time",
+              location: "Noida, Uttar Pradesh",
+              dateAvailable: "April 12, 2024",
               onPressed: () {
-                // Navigate to caretaker profile page
                 Navigator.push(
                   context,
                   MaterialPageRoute(
                     builder: (context) => CaretakerProfilePage(
-                      name: "Emily Smith",
-                      description: "Loves animals, flexible hours",
+                      name: "Neha Sharma",
+                      description: "Loves animals, available during evenings",
+                      availability: "Part-time",
+                      location: "Noida, Uttar Pradesh",
+                      dateAvailable: "April 12, 2024",
                     ),
                   ),
                 );
               },
             ),
-            SizedBox(height: 10.0),
-            // Add more caretaker cards here as needed
           ],
         ),
       ),
     );
   }
 
-  Widget _buildCaretakerCard(
-      {required String name,
-        required String description,
-        required String imageUrl,
-        required VoidCallback onPressed}) {
+  Widget _buildCaretakerCard({
+    required String name,
+    required String description,
+    required String imageUrl,
+    required String availability,
+    required String location,
+    required String dateAvailable,
+    required VoidCallback onPressed,
+  }) {
     return Card(
       elevation: 3.0,
       child: Padding(
@@ -207,10 +230,157 @@ class HomePageContent extends StatelessWidget {
               style: TextStyle(fontSize: 16.0),
             ),
             SizedBox(height: 10.0),
+            Text(
+              'Availability: $availability',
+              style: TextStyle(fontSize: 14.0),
+            ),
+            SizedBox(height: 5.0),
+            Text(
+              'Location: $location',
+              style: TextStyle(fontSize: 14.0),
+            ),
+            SizedBox(height: 5.0),
+            Text(
+              'Date Available: $dateAvailable',
+              style: TextStyle(fontSize: 14.0),
+            ),
+            SizedBox(height: 10.0),
             Align(
               alignment: Alignment.centerRight,
               child: ElevatedButton(
-                onPressed: onPressed, // Call the onPressed callback
+                onPressed: onPressed,
+                child: Text("Select"),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class GigsScreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return SingleChildScrollView(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Text(
+              "Available Pet Caretakers (Gigs):",
+              style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
+            ),
+          ),
+          SizedBox(height: 10.0),
+          _buildCaretakerCard(
+            name: "Rahul Verma",
+            description: "Experienced caretaker, available on weekdays",
+            location: "Delhi, India",
+            dateAvailable: "April 15, 2024",
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => CaretakerProfilePage(
+                    name: "Rahul Verma",
+                    description: "Experienced caretaker, available on weekdays",
+                    availability: "2 pm - 4 pm",
+                    location: "Delhi, India",
+                    dateAvailable: "April 15, 2024",
+                  ),
+                ),
+              );
+            },
+          ),
+          SizedBox(height: 10.0),
+          _buildCaretakerCard(
+            name: "Priya Singh",
+            description: "Animal lover, available on weekends",
+            location: "Ghaziabad, Uttar Pradesh",
+            dateAvailable: "April 18, 2024",
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => CaretakerProfilePage(
+                    name: "Priya Singh",
+                    description: "Animal lover, available on weekends",
+                    availability: "10 am - 6 pm",
+                    location: "Ghaziabad, Uttar Pradesh",
+                    dateAvailable: "April 18, 2024",
+                  ),
+                ),
+              );
+            },
+          ),
+          SizedBox(height: 10.0),
+          _buildCaretakerCard(
+            name: "Prabhat Thakur",
+            description: "Flexible hours, loves pets",
+            location: "Faridabad, Haryana",
+            dateAvailable: "April 20, 2024",
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => CaretakerProfilePage(
+                    name: "Prabhat Thakur",
+                    description: "Flexible hours, loves pets",
+                    availability: "10 am - 6 pm",
+                    location: "Faridabad, Haryana",
+                    dateAvailable: "April 20, 2024",
+                  ),
+                ),
+              );
+            },
+          ),
+          SizedBox(height: 10.0),
+          // Add more gigs here
+        ],
+      ),
+    );
+  }
+
+  Widget _buildCaretakerCard({
+    required String name,
+    required String description,
+    required String location,
+    required String dateAvailable,
+    required VoidCallback onPressed,
+  }) {
+    return Card(
+      elevation: 3.0,
+      child: Padding(
+        padding: EdgeInsets.all(12.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              name,
+              style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
+            ),
+            SizedBox(height: 5.0),
+            Text(
+              description,
+              style: TextStyle(fontSize: 16.0),
+            ),
+            SizedBox(height: 5.0),
+            Text(
+              'Location: $location',
+              style: TextStyle(fontSize: 14.0),
+            ),
+            SizedBox(height: 5.0),
+            Text(
+              'Date Available: $dateAvailable',
+              style: TextStyle(fontSize: 14.0),
+            ),
+            SizedBox(height: 10.0),
+            Align(
+              alignment: Alignment.centerRight,
+              child: ElevatedButton(
+                onPressed: onPressed,
                 child: Text("Select"),
               ),
             ),

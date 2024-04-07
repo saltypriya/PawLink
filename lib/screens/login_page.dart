@@ -49,7 +49,7 @@ class _LoginScreenState extends State<LoginScreen> {
               child: Column(
                 children: [
                   Image.asset(
-                    "assets/login.png", // assuming this is your image path
+                    "assets/images/pets.jpg", // assuming this is your image path
                     width: 210,
                   ),
                   const SizedBox(height: 15),
