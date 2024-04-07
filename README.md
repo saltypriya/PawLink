@@ -10,7 +10,7 @@ To get started with PawLink, follow these steps:
 
 Clone the Repository: Clone the PawLink repository from GitHub to your local machine using the following command:
 
-git clone https://github.com/your-username/pawlink.git
+git clone https://github.com/saltypriya/PawLink
 Install Dependencies: Navigate to the cloned repository directory and run pub get to install all dependencies required for the project:
 
 cd pawlink
